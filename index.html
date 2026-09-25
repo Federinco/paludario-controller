@@ -1,191 +1,496 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terraria Manager</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Icona standard per la schermata home di Android / iOS -->
-<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-<link rel="manifest" href="manifest.json">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terraria Manager Pro</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #121929;
+      --accent: #10b981;
+      --accent-glow: rgba(16, 185, 129, 0.3);
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding: 16px; max-width: 600px; margin: 0 auto; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    h1 { font-size: 1.4rem; color: var(--accent); }
+    .btn-icon { background: var(--card-bg); border: 1px solid #1f293d; color: var(--text); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 1rem; }
+    
+    .profile-bar { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 16px; }
+    .profile-chip { background: var(--card-bg); border: 1px solid #1f293d; border-radius: 20px; padding: 6px 14px; white-space: nowrap; color: var(--text-muted); font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+    .profile-chip.active { background: var(--accent-glow); border-color: var(--accent); color: var(--accent); font-weight: bold; }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .card { background: var(--card-bg); border: 1px solid #1f293d; border-radius: 12px; padding: 16px; }
+    .card-full { grid-column: span 2; }
+    .label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 4px; }
+    .value { font-size: 1.6rem; font-weight: bold; }
+    
+    .water-progress-bg { background: #1f293d; border-radius: 6px; height: 12px; width: 100%; overflow: hidden; margin-top: 8px; }
+    .water-progress-fill { background: var(--accent); height: 100%; width: 100%; transition: width 0.4s ease; }
+    
+    h2 { font-size: 1.1rem; margin: 16px 0 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .control-btn { background: var(--card-bg); border: 1px solid #1f293d; border-radius: 12px; padding: 16px; color: var(--text); cursor: pointer; text-align: left; transition: all 0.2s; }
+    .control-btn.active { background: var(--accent-glow); border-color: var(--accent); color: var(--accent); }
+    .control-btn h3 { font-size: 1rem; margin-bottom: 4px; }
+    .control-btn span { font-size: 0.8rem; color: var(--text-muted); }
+
+    .config-details { background: var(--card-bg); border: 1px solid #1f293d; border-radius: 12px; padding: 16px; margin-bottom: 20px; font-size: 0.9rem; }
+    .config-details p { margin-bottom: 4px; color: var(--text-muted); }
+    .config-details span { color: var(--text); font-weight: bold; }
+    .badge-ip-missing { color: var(--warning); font-weight: bold; cursor: pointer; text-decoration: underline; }
+    
+    .action-links { margin-top: 8px; display: flex; gap: 12px; font-size: 0.85rem; }
+    .action-links button { background: none; border: none; cursor: pointer; text-decoration: underline; font-size: 0.85rem; padding: 0; }
+    .btn-edit-profile { color: var(--accent); }
+    .btn-del-profile { color: var(--danger); }
+
+    #config-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; padding: 20px; z-index: 100; overflow-y: auto; }
+    .modal-content { background: var(--card-bg); border: 1px solid #1f293d; padding: 20px; border-radius: 12px; width: 100%; max-width: 400px; }
+    input, select { width: 100%; padding: 10px; background: var(--bg); border: 1px solid #1f293d; color: var(--text); border-radius: 8px; margin: 8px 0 16px; }
+    .manual-fields { display: none; background: rgba(255,255,255,0.02); border: 1px dashed #1f293d; padding: 12px; border-radius: 8px; margin-bottom: 16px; }
+    .btn-primary { width: 100%; background: var(--accent); color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    .btn-secondary { width: 100%; background: #1f293d; color: var(--text); border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 8px; }
+    
+    .custom-presets-manager { font-size: 0.8rem; margin-bottom: 12px; background: rgba(255,255,255,0.01); border: 1px solid #1f293d; padding: 8px; border-radius: 8px; }
+    .custom-preset-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; color: var(--text-muted); }
+    .custom-preset-row span { color: var(--text); }
+    .btn-del-preset { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 0.9rem; padding: 2px 6px; }
+  </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between">
+<body>
 
-    <!-- Header con Selettore Terrario e Pulsante Configurazione -->
-    <header class="bg-slate-800 border-b border-slate-700 p-4">
-        <div class="container mx-auto max-w-md flex justify-between items-center">
-            <div>
-                <h1 class="text-xl font-bold text-emerald-400">🌿 Terraria Manager</h1>
-                <select id="selettoreTerritorio" onchange="cambiaTerrarioAttivo()" class="bg-slate-900 text-slate-200 border border-slate-700 rounded-lg px-2 py-1 text-xs mt-1 focus:outline-none focus:border-emerald-500 font-medium cursor-pointer">
-                    <!-- Popolato dinamicamente da JavaScript -->
-                </select>
-            </div>
-            <button onclick="apriModalConfig()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 p-2 rounded-lg text-sm transition cursor-pointer" title="Configurazione Terrari e Preset">
-                ⚙️ Config
-            </button>
-        </div>
-    </header>
+  <header>
+    <h1>🌿 Terraria Manager</h1>
+    <button class="btn-icon" onclick="openConfigModal(false)">➕ Nuovo Terrario</button>
+  </header>
 
-    <!-- Main Content -->
-    <main class="container mx-auto p-4 max-w-md space-y-4 flex-grow">
+  <div class="profile-bar" id="profile-bar"></div>
 
-        <!-- Container Notifiche di Anomalia -->
-        <div id="containerNotifiche" class="space-y-2">
-            <!-- Banner Allarme Livello Acqua (Critico) -->
-            <div id="waterWarning" class="bg-red-500/10 border border-red-500/50 rounded-xl p-3 flex items-center gap-3 hidden">
-                <span class="text-red-400 text-xl">⚠️</span>
-                <div>
-                    <h4 class="text-xs font-bold text-red-400 uppercase tracking-wide">Attenzione Acqua</h4>
-                    <p id="waterWarningText" class="text-xs text-red-300">Livello acqua insufficiente! Irrigazione bloccata.</p>
-                </div>
-            </div>
-        </div>
+  <div class="config-details" id="config-details"></div>
 
-        <!-- Stato Connessione Rapido -->
-        <div class="flex justify-between items-center px-1 text-xs text-slate-400">
-            <span id="connessioneStato" class="text-red-400 font-medium">● Disconnesso</span>
-            <span id="ultimoAggiornamento">Ultimo agg: --:--</span>
-        </div>
-
-        <!-- Sensori (Dashboard) -->
-        <div class="grid grid-cols-2 gap-4">
-            <!-- Umidità Aria -->
-            <div id="cardUmidita" class="bg-slate-800 p-4 rounded-xl border border-slate-700 text-center shadow-lg transition">
-                <span class="text-slate-400 text-xs block uppercase tracking-wider">Umidità Aria</span>
-                <span id="valoreUmidita" class="text-3xl font-extrabold text-blue-400 mt-1 block">--%</span>
-                <span id="statoUmiditaTxt" class="text-[10px] text-slate-500 mt-1 block">Soglia: --</span>
-            </div>
-            <!-- Temperatura -->
-            <div id="cardTemp" class="bg-slate-800 p-4 rounded-xl border border-slate-700 text-center shadow-lg transition">
-                <span class="text-slate-400 text-xs block uppercase tracking-wider">Temperatura</span>
-                <span id="valoreTemp" class="text-3xl font-extrabold text-amber-400 mt-1 block">--°C</span>
-                <span id="statoTempTxt" class="text-[10px] text-slate-500 mt-1 block">Soglia: --</span>
-            </div>
-        </div>
-
-        <!-- Controlli Manuali (Attuatori) -->
-        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg space-y-3">
-            <h2 class="text-sm font-semibold text-slate-300 border-b border-slate-700 pb-2">Comandi Manuali</h2>
-            
-            <!-- Nebulizzatore / Fogger -->
-            <div class="flex items-center justify-between">
-                <div>
-                    <span class="font-medium text-sm block">Nebulizzatore (Fogger)</span>
-                    <span class="text-xs text-slate-400">Umidificazione</span>
-                </div>
-                <button onclick="inviaComando('fogger', 'toggle')" id="btnFogger" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-sm font-bold transition cursor-pointer">OFF</button>
-            </div>
-
-            <!-- Pompa Irrigazione -->
-            <div class="flex items-center justify-between border-t border-slate-700/50 pt-3">
-                <div>
-                    <span class="font-medium text-sm block">Pompa Irrigazione</span>
-                    <span class="text-xs text-slate-400">Ciclo Diurno (Protetta)</span>
-                </div>
-                <button onclick="inviaComando('irrigazione', 'toggle')" id="btnIrrigazione" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-sm font-bold transition cursor-pointer">OFF</button>
-            </div>
-
-            <!-- Pompa Cascata -->
-            <div class="flex items-center justify-between border-t border-slate-700/50 pt-3">
-                <div>
-                    <span class="font-medium text-sm block">Pompa Cascata</span>
-                    <span class="text-xs text-slate-400">Movimento Acqua</span>
-                </div>
-                <button onclick="inviaComando('cascata', 'toggle')" id="btnCascata" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-sm font-bold transition cursor-pointer">OFF</button>
-            </div>
-
-            <!-- Luci -->
-            <div class="flex items-center justify-between border-t border-slate-700/50 pt-3">
-                <div>
-                    <span class="font-medium text-sm block">Illuminazione LED</span>
-                    <span class="text-xs text-slate-400">Spettro pieno</span>
-                </div>
-                <button onclick="inviaComando('luci', 'toggle')" id="btnLuci" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-sm font-bold transition cursor-pointer">OFF</button>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- Modale di Configurazione Avanzata (Con Altezza Max e Scroll Interno) -->
-    <div id="modalConfig" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
-        <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-md w-full shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
-            
-            <!-- Header Modale (Fisso) -->
-            <div class="flex justify-between items-center border-b border-slate-700 p-4 bg-slate-800">
-                <h3 class="font-bold text-slate-200">Gestione Terrari & Preset</h3>
-                <button onclick="chiudiModalConfig()" class="text-slate-400 hover:text-slate-200 text-lg cursor-pointer">&times;</button>
-            </div>
-
-            <!-- Corpo Scorrevole del Modale -->
-            <div class="p-4 space-y-4 overflow-y-auto flex-grow">
-                <!-- Form Aggiunta / Modifica Terrario -->
-                <div class="space-y-3 bg-slate-900/50 p-3 rounded-xl border border-slate-700/50">
-                    <h4 id="formTitle" class="text-xs font-semibold text-emerald-400 uppercase tracking-wide">Aggiungi Nuovo Terrario</h4>
-                    <input type="hidden" id="editIndex" value="-1">
-                    
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Nome Terrario</label>
-                        <input type="text" id="inputNome" placeholder="es. Paludario Libreria" class="bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm w-full focus:outline-none focus:border-emerald-500">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Indirizzo IP ESP32</label>
-                        <input type="text" id="inputIp" placeholder="es. 192.168.1.150" class="bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm w-full focus:outline-none focus:border-emerald-500">
-                    </div>
-
-                    <!-- Selettore Preset Climatico -->
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Preset Climatico (Clima Ideale)</label>
-                        <select id="selectPreset" onchange="applicaPresetClimatico()" class="bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm w-full focus:outline-none focus:border-emerald-500 text-slate-200 cursor-pointer">
-                            <option value="">-- Seleziona un Preset o Personalizza --</option>
-                            <option value="tropicale">Paludario / Foresta Tropicale (80% Umi, 22°C)</option>
-                            <option value="subtropicale">Subtropicale Standard (70% Umi, 20°C)</option>
-                            <option value="deserto">Desertico / Secco (40% Umi, 26°C)</option>
-                            <option value="temperato">Bosco Temperato (60% Umi, 18°C)</option>
-                        </select>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1">Min Umidità (%)</label>
-                            <input type="number" id="inputMinUmi" value="70" class="bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm w-full focus:outline-none focus:border-emerald-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1">Min Temp (°C)</label>
-                            <input type="number" id="inputMinTemp" value="20" class="bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm w-full focus:outline-none focus:border-emerald-500">
-                        </div>
-                    </div>
-
-                    <div class="flex gap-2 pt-1">
-                        <button onclick="salvaTerrario()" id="btnSalvaTerrario" class="flex-1 bg-emerald-600 hover:bg-emerald-500 py-2 rounded-lg text-sm font-medium transition cursor-pointer">Salva Terrario</button>
-                        <button onclick="resetFormTerrario()" id="btnAnnullaMod" class="hidden bg-slate-700 hover:bg-slate-600 px-3 py-2 rounded-lg text-sm transition cursor-pointer">Annulla</button>
-                    </div>
-                </div>
-
-                <!-- Lista Terrari Esistenti -->
-                <div>
-                    <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">I Miei Terrari Salvati</h4>
-                    <div id="listaTerrariModal" class="space-y-2">
-                        <!-- Popolato via JS -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer Modale (Fisso in basso) -->
-            <div class="border-t border-slate-700 p-4 bg-slate-800">
-                <button onclick="chiudiModalConfig()" class="w-full bg-slate-700 hover:bg-slate-600 py-2 rounded-lg text-sm font-medium transition cursor-pointer">Chiudi</button>
-            </div>
-
-        </div>
+  <div class="grid">
+    <div class="card">
+      <div class="label">Temperatura</div>
+      <div class="value" id="temp">--.- °C</div>
     </div>
+    <div class="card">
+      <div class="label">Umidità</div>
+      <div class="value" id="umi">--.- %</div>
+    </div>
+    
+    <div class="card card-full">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <div class="label">Autonomia Serbatoio</div>
+          <div class="value" id="water-days" style="font-size: 1.2rem;">Calcolo...</div>
+        </div>
+        <button class="btn-icon" onclick="resetWater()" style="font-size: 0.8rem; background: #1f293d;">💧 Rabbocco</button>
+      </div>
+      <div class="water-progress-bg">
+        <div class="water-progress-fill" id="water-bar" style="width: 100%;"></div>
+      </div>
+    </div>
+  </div>
 
-    <!-- Footer -->
-    <footer class="text-center p-4 text-xs text-slate-500 border-t border-slate-800">
-        Terraria Multi-Manager &bull; GitHub Pages
-    </footer>
+  <h2>Attuatori (Terrario Attivo)</h2>
+  <div class="controls-grid">
+    <button class="control-btn" id="btn-fogger" onclick="toggleDevice('fogger')">
+      <h3>Fogger</h3>
+      <span id="status-fogger">Spento</span>
+    </button>
+    <button class="control-btn" id="btn-irrigazione" onclick="toggleDevice('irrigazione')">
+      <h3>Irrigazione</h3>
+      <span id="status-irrigazione">Spento</span>
+    </button>
+    <button class="control-btn" id="btn-cascata" onclick="toggleDevice('cascata')">
+      <h3>Cascata</h3>
+      <span id="status-cascata">Spento</span>
+    </button>
+    <button class="control-btn" id="btn-luci" onclick="toggleDevice('luci')">
+      <h3>Luci LED</h3>
+      <span id="status-luci">Spento</span>
+    </button>
+  </div>
 
-    <script src="script.js"></script>
+  <div id="config-modal">
+    <div class="modal-content">
+      <h3 id="modal-title">Configurazione Terrario</h3>
+      
+      <label class="label">Nome Terrario</label>
+      <input type="text" id="cfg-name" placeholder="es. Terrario Dendrobates">
+
+      <label class="label">Indirizzo IP ESP32</label>
+      <input type="text" id="esp-ip" placeholder="es. 192.168.1.150">
+
+      <label class="label">Ambiente / Preset Climatico</label>
+      <select id="preset-select" onchange="handlePresetChange()">
+        <option value="tropicale">🌲 Foresta Tropicale (26°C / 85%)</option>
+        <option value="palude">🌿 Palude / Amphibia (24°C / 95%)</option>
+        <option value="subtropicale">🍃 Subtropicale / Bosco (25°C / 70%)</option>
+        <option value="deserto">🏜️ Deserto / Arido (32°C / 30%)</option>
+        <option value="manuale">🛠️ Personalizzato (Manuale)</option>
+        <option value="salva_nuovo_preset">💾 Salva impostazioni attuali come preset...</option>
+      </select>
+
+      <div id="custom-presets-box" class="custom-presets-manager" style="display:none;">
+        <div style="font-weight: bold; margin-bottom: 6px; color: var(--text);">Preset Personalizzati Salvati:</div>
+        <div id="custom-presets-list"></div>
+      </div>
+
+      <div id="manual-inputs" class="manual-fields">
+        <label class="label">Durata Fogger (secondi)</label>
+        <input type="number" id="m-fogger-time" placeholder="es. 30">
+
+        <label class="label">Durata Irrigazione (secondi)</label>
+        <input type="number" id="m-irrig-time" placeholder="es. 15">
+      </div>
+
+      <button class="btn-primary" onclick="saveConfiguration()">Salva Terrario</button>
+      <button class="btn-secondary" onclick="closeModal()">Annulla</button>
+    </div>
+  </div>
+
+  <script>
+    const defaultPresets = {
+      tropicale: { name: 'Foresta Tropicale', targetTemp: 26, targetUmi: 85, foggerTime: 25, irrigTime: 15 },
+      palude: { name: 'Palude / Amphibia', targetTemp: 24, targetUmi: 95, foggerTime: 35, irrigTime: 20 },
+      subtropicale: { name: 'Subtropicale', targetTemp: 25, targetUmi: 70, foggerTime: 15, irrigTime: 10 },
+      deserto: { name: 'Deserto / Arido', targetTemp: 32, targetUmi: 30, foggerTime: 5, irrigTime: 5 },
+      manuale: { name: 'Personalizzato', targetTemp: '--', targetUmi: '--', foggerTime: 20, irrigTime: 10 }
+    };
+
+    let customPresets = JSON.parse(localStorage.getItem('terraria_custom_presets')) || {};
+
+    function getAllPresets() {
+      return { ...defaultPresets, ...customPresets };
+    }
+
+    function rebuildPresetSelect(selectedKey = 'tropicale') {
+      const select = document.getElementById('preset-select');
+      select.innerHTML = `
+        <option value="tropicale">🌲 Foresta Tropicale (26°C / 85%)</option>
+        <option value="palude">🌿 Palude / Amphibia (24°C / 95%)</option>
+        <option value="subtropicale">🍃 Subtropicale / Bosco (25°C / 70%)</option>
+        <option value="deserto">🏜️ Deserto / Arido (32°C / 30%)</option>
+        <option value="manuale">🛠️ Personalizzato (Manuale)</option>
+      `;
+
+      for (const [key, p] of Object.entries(customPresets)) {
+        let opt = document.createElement('option');
+        opt.value = key;
+        opt.textContent = `💾 ${p.name} (${p.foggerTime}s / ${p.irrigTime}s)`;
+        select.appendChild(opt);
+      }
+
+      let saveOpt = document.createElement('option');
+      saveOpt.value = 'salva_nuovo_preset';
+      saveOpt.textContent = '➕ Salva impostazioni attuali come preset...';
+      select.appendChild(saveOpt);
+
+      select.value = selectedKey;
+      renderCustomPresetsManager();
+    }
+
+    function renderCustomPresetsManager() {
+      const box = document.getElementById('custom-presets-box');
+      const list = document.getElementById('custom-presets-list');
+      list.innerHTML = '';
+      
+      const keys = Object.keys(customPresets);
+      if (keys.length === 0) {
+        box.style.display = 'none';
+        return;
+      }
+      
+      box.style.display = 'block';
+      keys.forEach(key => {
+        let p = customPresets[key];
+        let row = document.createElement('div');
+        row.className = 'custom-preset-row';
+        row.innerHTML = `
+          <span>${p.name} (${p.foggerTime}s / ${p.irrigTime}s)</span>
+          <button class="btn-del-preset" onclick="deleteCustomPreset('${key}')" title="Elimina preset">❌ Elimina</button>
+        `;
+        list.appendChild(row);
+      });
+    }
+
+    function deleteCustomPreset(key) {
+      if (confirm("Vuoi davvero eliminare questo preset salvato?")) {
+        delete customPresets[key];
+        localStorage.setItem('terraria_custom_presets', JSON.stringify(customPresets));
+        rebuildPresetSelect('tropicale');
+      }
+    }
+
+    let configs = JSON.parse(localStorage.getItem('terraria_configs')) || [
+      { id: 'default', name: 'Terrario 1', ip: '', preset: 'tropicale', foggerTime: 25, irrigTime: 15 }
+    ];
+    let activeId = localStorage.getItem('terraria_active_id') || configs[0].id;
+    let isEditingExisting = false;
+
+    function getActiveConfig() {
+      return configs.find(c => c.id === activeId) || configs[0];
+    }
+
+    function renderProfiles() {
+      const bar = document.getElementById('profile-bar');
+      bar.innerHTML = '';
+      configs.forEach(cfg => {
+        let chip = document.createElement('div');
+        chip.className = `profile-chip ${cfg.id === activeId ? 'active' : ''}`;
+        chip.innerHTML = `🌿 ${cfg.name}`;
+        chip.onclick = () => switchProfile(cfg.id);
+        bar.appendChild(chip);
+      });
+      renderDetails();
+    }
+
+    function renderDetails() {
+      let cfg = getActiveConfig();
+      let detailsDiv = document.getElementById('config-details');
+      let all = getAllPresets();
+      let pInfo = all[cfg.preset] || { name: 'Personalizzato', targetTemp: '--', targetUmi: '--' };
+      
+      let modeText = (cfg.preset === 'manuale' || cfg.preset.startsWith('custom_')) ? pInfo.name : `${pInfo.name} (${pInfo.targetTemp}°C / ${pInfo.targetUmi}%)`;
+      let ipDisplay = cfg.ip 
+        ? `<span>${cfg.ip}</span>` 
+        : `<span class="badge-ip-missing" onclick="openConfigModal(true)">⚠️ Configura IP</span>`;
+      
+      detailsDiv.innerHTML = `
+        <p>Terrario: <span>${cfg.name}</span> | IP: ${ipDisplay}</p>
+        <p>Ambiente: <span>${modeText}</span></p>
+        <p style="font-size: 0.8rem; margin-top: 4px;">Attuatori: Fogger <span>${cfg.foggerTime}s</span> | Irrigazione <span>${cfg.irrigTime}s</span></p>
+        <div class="action-links">
+          <button class="btn-edit-profile" onclick="openConfigModal(true)">✏️ Modifica Terrario</button>
+          <button class="btn-del-profile" onclick="deleteActiveTerrarium()">🗑️ Elimina Terrario</button>
+        </div>
+      `;
+    }
+
+    function switchProfile(id) {
+      activeId = id;
+      localStorage.setItem('terraria_active_id', activeId);
+      renderProfiles();
+      fetchStatus();
+    }
+
+    function deleteActiveTerrarium() {
+      if (configs.length <= 1) {
+        alert("Non puoi eliminare l'unico terrario rimasto. Crea prima un nuovo terrario.");
+        return;
+      }
+      
+      let cfg = getActiveConfig();
+      if (confirm(`Vuoi davvero eliminare il terrario "${cfg.name}"?`)) {
+        localStorage.removeItem('last_refill_' + activeId);
+        configs = configs.filter(c => c.id !== activeId);
+        activeId = configs[0].id;
+        
+        localStorage.setItem('terraria_configs', JSON.stringify(configs));
+        localStorage.setItem('terraria_active_id', activeId);
+        
+        renderProfiles();
+        fetchStatus();
+      }
+    }
+
+    function openConfigModal(editCurrent = false) {
+      isEditingExisting = editCurrent;
+      let cfg = editCurrent ? getActiveConfig() : { name: '', ip: '', preset: 'tropicale', foggerTime: 25, irrigTime: 15 };
+
+      document.getElementById('modal-title').innerText = editCurrent ? 'Modifica Terrario' : 'Nuovo Terrario';
+      document.getElementById('cfg-name').value = cfg.name;
+      document.getElementById('esp-ip').value = cfg.ip;
+      
+      rebuildPresetSelect(cfg.preset);
+
+      document.getElementById('m-fogger-time').value = cfg.foggerTime;
+      document.getElementById('m-irrig-time').value = cfg.irrigTime;
+      
+      handlePresetChange();
+      document.getElementById('config-modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('config-modal').style.display = 'none';
+    }
+
+    function handlePresetChange() {
+      const preset = document.getElementById('preset-select').value;
+      const manualBox = document.getElementById('manual-inputs');
+      
+      if (preset === 'salva_nuovo_preset') {
+        let presetName = prompt("Inserisci il nome per il nuovo preset definitivo:", "Mio Preset");
+        if (presetName && presetName.trim() !== '') {
+          let fTime = parseInt(document.getElementById('m-fogger-time').value) || 20;
+          let iTime = parseInt(document.getElementById('m-irrig-time').value) || 10;
+          let newKey = 'custom_' + Date.now();
+          
+          customPresets[newKey] = {
+            name: presetName.trim(),
+            targetTemp: '--',
+            targetUmi: '--',
+            foggerTime: fTime,
+            irrigTime: iTime
+          };
+          
+          localStorage.setItem('terraria_custom_presets', JSON.stringify(customPresets));
+          rebuildPresetSelect(newKey);
+          manualBox.style.display = 'block';
+          return;
+        } else {
+          rebuildPresetSelect('tropicale');
+          return;
+        }
+      }
+
+      manualBox.style.display = (preset === 'manuale' || preset.startsWith('custom_')) ? 'block' : 'none';
+
+      let all = getAllPresets();
+      if (all[preset]) {
+        document.getElementById('m-fogger-time').value = all[preset].foggerTime;
+        document.getElementById('m-irrig-time').value = all[preset].irrigTime;
+      }
+    }
+
+    function saveConfiguration() {
+      let name = document.getElementById('cfg-name').value.trim() || ('Terrario ' + (configs.length + 1));
+      let ip = document.getElementById('esp-ip').value.trim();
+      let preset = document.getElementById('preset-select').value;
+      
+      if (preset === 'salva_nuovo_preset') {
+        preset = 'manuale';
+      }
+      
+      let foggerTime = parseInt(document.getElementById('m-fogger-time').value) || 20;
+      let irrigTime = parseInt(document.getElementById('m-irrig-time').value) || 10;
+
+      if (defaultPresets[preset] && preset !== 'manuale') {
+        foggerTime = defaultPresets[preset].foggerTime;
+        irrigTime = defaultPresets[preset].irrigTime;
+      } else if (customPresets[preset]) {
+        foggerTime = customPresets[preset].foggerTime;
+        irrigTime = customPresets[preset].irrigTime;
+      }
+
+      if (isEditingExisting) {
+        let activeCfg = getActiveConfig();
+        activeCfg.name = name;
+        activeCfg.ip = ip;
+        activeCfg.preset = preset;
+        activeCfg.foggerTime = foggerTime;
+        activeCfg.irrigTime = irrigTime;
+      } else {
+        let newCfg = {
+          id: 'cfg_' + Date.now(),
+          name: name,
+          ip: ip,
+          preset: preset,
+          foggerTime: foggerTime,
+          irrigTime: irrigTime
+        };
+        configs.push(newCfg);
+        activeId = newCfg.id;
+      }
+
+      localStorage.setItem('terraria_configs', JSON.stringify(configs));
+      localStorage.setItem('terraria_active_id', activeId);
+
+      closeModal();
+      renderProfiles();
+      fetchStatus();
+    }
+
+    function updateWaterPrediction() {
+      let lastRefill = localStorage.getItem('last_refill_' + activeId);
+      const maxDays = 5; 
+      if (!lastRefill) {
+        resetWater();
+        return;
+      }
+      let diffDays = (new Date() - new Date(lastRefill)) / (1000 * 60 * 60 * 24);
+      let remainingDays = Math.max(0, (maxDays - diffDays)).toFixed(1);
+      let percent = Math.max(0, Math.min(100, (remainingDays / maxDays) * 100));
+
+      document.getElementById('water-days').innerText = `~${remainingDays} giorni`;
+      let bar = document.getElementById('water-bar');
+      bar.style.width = percent + '%';
+      bar.style.background = (percent < 20) ? 'var(--danger)' : 'var(--accent)';
+    }
+
+    function resetWater() {
+      localStorage.setItem('last_refill_' + activeId, new Date().toISOString());
+      updateWaterPrediction();
+    }
+
+    function fetchStatus() {
+      let cfg = getActiveConfig();
+      if (!cfg.ip) {
+        document.getElementById('temp').innerText = '--.- °C';
+        document.getElementById('umi').innerText = '--.- %';
+        return;
+      }
+      
+      fetch(`http://${cfg.ip}/status`)
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('temp').innerText = data.temp + ' °C';
+          document.getElementById('umi').innerText = data.umi + ' %';
+          
+          updateDeviceState('fogger', data.fogger);
+          updateDeviceState('irrigazione', data.irrigazione);
+          updateDeviceState('cascata', data.cascata);
+          updateDeviceState('luci', data.luci);
+          updateWaterPrediction();
+        })
+        .catch(err => console.log("ESP32 non raggiungibile all'indirizzo " + cfg.ip));
+    }
+
+    function updateDeviceState(device, state) {
+      const btn = document.getElementById(`btn-${device}`);
+      const statusSpan = document.getElementById(`status-${device}`);
+      if (state === 1) {
+        btn.classList.add('active');
+        statusSpan.innerText = 'Acceso';
+      } else {
+        btn.classList.remove('active');
+        statusSpan.innerText = 'Spento';
+      }
+    }
+
+    function toggleDevice(device) {
+      let cfg = getActiveConfig();
+      if (!cfg.ip) {
+        alert("Inserisci prima l'indirizzo IP della scheda ESP32 per questo terrario!");
+        openConfigModal(true);
+        return;
+      }
+
+      let durata = 0;
+      if (device === 'fogger') durata = cfg.foggerTime;
+      if (device === 'irrigazione') durata = cfg.irrigTime;
+
+      let url = `http://${cfg.ip}/control?dispositivo=${device}&azione=toggle`;
+      if (durata > 0) url += `&durata=${durata}`;
+
+      fetch(url)
+        .then(res => res.json())
+        .then(data => fetchStatus())
+        .catch(err => alert("Impossibile raggiungere l'ESP32 all'IP: " + cfg.ip + ". Verifica la connessione."));
+    }
+
+    renderProfiles();
+    setInterval(fetchStatus, 5000);
+    if (getActiveConfig().ip) fetchStatus();
+  </script>
 </body>
 </html>
