@@ -1,16 +1,15 @@
 {
-  "name": "Terraria Manager",
-  "short_name": "Terraria",
+  "name": "Terraria Manager Pro",
+  "short_name": "TerrariaApp",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#090d16",
-  "theme_color": "#090d16",
+  "theme_color": "#10b981",
   "icons": [
     {
       "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }

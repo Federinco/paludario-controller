@@ -1,15 +1,8 @@
 self.addEventListener('install', (e) => {
-  e.waitUntil(
-    caches.open('terraria-v2').then((cache) => {
-      return cache.addAll(['./index.html', './manifest.json', './icon-512.png']);
-    })
-  );
+  console.log('[Service Worker] Installato');
 });
 
 self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request).then((response) => {
-      return response || fetch(e.request);
-    })
-  );
+  // Lascia passare le richieste di rete normalmente
+  e.respondWith(fetch(e.request));
 });
