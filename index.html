@@ -14,55 +14,110 @@
       --warning: #f59e0b;
       --text: #f3f4f6;
       --text-muted: #9ca3af;
+      --border: #1f293d;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-    body { background-color: var(--bg); color: var(--text); padding: 16px; max-width: 600px; margin: 0 auto; }
+    body { background-color: var(--bg); color: var(--text); padding: 16px; max-width: 600px; margin: 0 auto; padding-bottom: 70px; }
+    
     header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
     h1 { font-size: 1.4rem; color: var(--accent); }
-    .btn-icon { background: var(--card-bg); border: 1px solid #1f293d; color: var(--text); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 1rem; }
+    .btn-icon { background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 1rem; }
     
+    /* Barra profili */
     .profile-bar { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 16px; }
-    .profile-chip { background: var(--card-bg); border: 1px solid #1f293d; border-radius: 20px; padding: 6px 14px; white-space: nowrap; color: var(--text-muted); font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+    .profile-chip { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; white-space: nowrap; color: var(--text-muted); font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px; }
     .profile-chip.active { background: var(--accent-glow); border-color: var(--accent); color: var(--accent); font-weight: bold; }
 
+    /* Navigazione a Schede in basso (3 schede) */
+    .nav-tabs { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px; z-index: 50; max-width: 600px; margin: 0 auto; }
+    .nav-tab { background: none; border: none; color: var(--text-muted); font-size: 0.85rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .nav-tab.active { color: var(--accent); font-weight: bold; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-    .card { background: var(--card-bg); border: 1px solid #1f293d; border-radius: 12px; padding: 16px; }
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
     .card-full { grid-column: span 2; }
     .label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 4px; }
     .value { font-size: 1.6rem; font-weight: bold; }
     
-    .water-progress-bg { background: #1f293d; border-radius: 6px; height: 12px; width: 100%; overflow: hidden; margin-top: 8px; }
+    /* Avvisi di sicurezza */
+    .alert-banner { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); color: var(--danger); padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 16px; display: none; align-items: center; gap: 8px; }
+    
+    .water-progress-bg { background: var(--border); border-radius: 6px; height: 12px; width: 100%; overflow: hidden; margin-top: 8px; }
     .water-progress-fill { background: var(--accent); height: 100%; width: 100%; transition: width 0.4s ease; }
     
     h2 { font-size: 1.1rem; margin: 16px 0 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
     
-    .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-    .control-btn { background: var(--card-bg); border: 1px solid #1f293d; border-radius: 12px; padding: 16px; color: var(--text); cursor: pointer; text-align: left; transition: all 0.2s; }
-    .control-btn.active { background: var(--accent-glow); border-color: var(--accent); color: var(--accent); }
-    .control-btn h3 { font-size: 1rem; margin-bottom: 4px; }
-    .control-btn span { font-size: 0.8rem; color: var(--text-muted); }
-
-    .config-details { background: var(--card-bg); border: 1px solid #1f293d; border-radius: 12px; padding: 16px; margin-bottom: 20px; font-size: 0.9rem; }
-    .config-details p { margin-bottom: 4px; color: var(--text-muted); }
-    .config-details span { color: var(--text); font-weight: bold; }
+    /* Sezione Dettagli Terrario */
+    .config-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+    .config-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+    .config-title { font-size: 1.1rem; font-weight: bold; color: var(--text); display: flex; align-items: center; gap: 8px; }
+    .config-badge { font-size: 0.75rem; background: var(--accent-glow); color: var(--accent); padding: 2px 8px; border-radius: 10px; border: 1px solid var(--accent); }
+    
+    .config-grid-info { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.85rem; margin-bottom: 12px; }
+    .config-item label { color: var(--text-muted); display: block; margin-bottom: 2px; }
+    .config-item span { color: var(--text); font-weight: 500; }
     .badge-ip-missing { color: var(--warning); font-weight: bold; cursor: pointer; text-decoration: underline; }
-    
-    .action-links { margin-top: 8px; display: flex; gap: 12px; font-size: 0.85rem; }
-    .action-links button { background: none; border: none; cursor: pointer; text-decoration: underline; font-size: 0.85rem; padding: 0; }
-    .btn-edit-profile { color: var(--accent); }
-    .btn-del-profile { color: var(--danger); }
 
-    #config-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; padding: 20px; z-index: 100; overflow-y: auto; }
-    .modal-content { background: var(--card-bg); border: 1px solid #1f293d; padding: 20px; border-radius: 12px; width: 100%; max-width: 400px; }
-    input, select { width: 100%; padding: 10px; background: var(--bg); border: 1px solid #1f293d; color: var(--text); border-radius: 8px; margin: 8px 0 16px; }
-    .manual-fields { display: none; background: rgba(255,255,255,0.02); border: 1px dashed #1f293d; padding: 12px; border-radius: 8px; margin-bottom: 16px; }
-    .btn-primary { width: 100%; background: var(--accent); color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-    .btn-secondary { width: 100%; background: #1f293d; color: var(--text); border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 8px; }
+    .config-actions { display: flex; gap: 10px; }
+    .btn-action-outline { background: transparent; border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.2s; }
+    .btn-action-outline:hover { background: rgba(255,255,255,0.05); border-color: var(--text-muted); }
+    .btn-action-danger { color: var(--danger); border-color: rgba(239, 68, 68, 0.3); }
+    .btn-action-danger:hover { background: rgba(239, 68, 68, 0.1); }
+
+    /* Controlli Attuatori */
+    .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .control-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; justify-content: space-between; min-height: 90px; }
+    .control-card:hover { border-color: var(--text-muted); }
+    .control-card.active { background: var(--accent-glow); border-color: var(--accent); }
     
-    .custom-presets-manager { font-size: 0.8rem; margin-bottom: 12px; background: rgba(255,255,255,0.01); border: 1px solid #1f293d; padding: 8px; border-radius: 8px; }
+    .control-header { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+    .control-header h3 { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+    .control-card.active .control-header h3 { color: var(--accent); }
+    
+    /* Toggle switch */
+    .switch { position: relative; display: inline-block; width: 40px; height: 22px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border); transition: .3s; border-radius: 22px; }
+    .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: var(--text-muted); transition: .3s; border-radius: 50%; }
+    input:checked + .slider { background-color: var(--accent); }
+    input:checked + .slider:before { transform: translateX(18px); background-color: #000; }
+
+    .control-footer { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 8px; font-size: 0.75rem; color: var(--text-muted); }
+    .control-card.active .control-footer { color: var(--accent); font-weight: 500; }
+
+    /* Grafico e Log */
+    .chart-filters { display: flex; gap: 6px; margin-bottom: 12px; }
+    .btn-filter { background: var(--bg); border: 1px solid var(--border); color: var(--text-muted); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; }
+    .btn-filter.active { background: var(--accent-glow); border-color: var(--accent); color: var(--accent); font-weight: bold; }
+    canvas { width: 100% !important; height: 160px !important; background: var(--bg); border-radius: 8px; border: 1px solid var(--border); }
+
+    .log-container { max-height: 200px; overflow-y: auto; font-size: 0.8rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); }
+    .log-row { display: flex; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+    .log-row:last-child { border-bottom: none; }
+    .log-time { color: var(--text-muted); }
+    .log-action { color: var(--text); font-weight: 500; }
+
+    /* Scheda 3: Diario & Galleria */
+    .timeline-item { border-left: 2px solid var(--accent); padding-left: 12px; margin-bottom: 12px; position: relative; }
+    .timeline-date { font-size: 0.75rem; color: var(--text-muted); }
+    .timeline-text { font-size: 0.85rem; margin-top: 2px; }
+    
+    .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+    .gallery-thumb { width: 100%; height: 90px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; }
+
+    /* Modale */
+    #config-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; padding: 20px; z-index: 100; overflow-y: auto; }
+    .modal-content { background: var(--card-bg); border: 1px solid var(--border); padding: 20px; border-radius: 12px; width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto; }
+    input, select, textarea { width: 100%; padding: 10px; background: var(--bg); border: 1px solid var(--border); color: var(--text); border-radius: 8px; margin: 8px 0 16px; }
+    .manual-fields { display: none; background: rgba(255,255,255,0.02); border: 1px dashed var(--border); padding: 12px; border-radius: 8px; margin-bottom: 16px; }
+    .btn-primary { width: 100%; background: var(--accent); color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    .btn-secondary { width: 100%; background: var(--border); color: var(--text); border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 8px; }
+    .custom-presets-manager { font-size: 0.8rem; margin-bottom: 12px; background: rgba(255,255,255,0.01); border: 1px solid var(--border); padding: 8px; border-radius: 8px; }
     .custom-preset-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; color: var(--text-muted); }
-    .custom-preset-row span { color: var(--text); }
-    .btn-del-preset { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 0.9rem; padding: 2px 6px; }
+    .btn-del-preset { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 0.9rem; }
   </style>
 </head>
 <body>
@@ -74,56 +129,228 @@
 
   <div class="profile-bar" id="profile-bar"></div>
 
-  <div class="config-details" id="config-details"></div>
+  <!-- AVVISI DI SICUREZZA -->
+  <div id="alert-banner" class="alert-banner">
+    <span>⚠️</span> <span id="alert-text">Attenzione: parametri fuori range ideale!</span>
+  </div>
 
-  <div class="grid">
-    <div class="card">
-      <div class="label">Temperatura</div>
-      <div class="value" id="temp">--.- °C</div>
-    </div>
-    <div class="card">
-      <div class="label">Umidità</div>
-      <div class="value" id="umi">--.- %</div>
-    </div>
+  <!-- SCHEDA 1: CONTROLLO -->
+  <div id="tab-control" class="tab-content active">
     
-    <div class="card card-full">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <div class="label">Autonomia Serbatoio</div>
-          <div class="value" id="water-days" style="font-size: 1.2rem;">Calcolo...</div>
-        </div>
-        <button class="btn-icon" onclick="resetWater()" style="font-size: 0.8rem; background: #1f293d;">💧 Rabbocco</button>
+    <div class="config-card" id="config-details"></div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="label">Temperatura</div>
+        <div class="value" id="temp">--.- °C</div>
       </div>
-      <div class="water-progress-bg">
-        <div class="water-progress-fill" id="water-bar" style="width: 100%;"></div>
+      <div class="card">
+        <div class="label">Umidità</div>
+        <div class="value" id="umi">--.- %</div>
+      </div>
+      
+      <div class="card card-full">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div class="label">Autonomia Serbatoio</div>
+            <div class="value" id="water-days" style="font-size: 1.2rem;">Calcolo...</div>
+          </div>
+          <button class="btn-icon" onclick="resetWater()" style="font-size: 0.8rem; background: var(--border);">💧 Rabbocco</button>
+        </div>
+        <div class="water-progress-bg">
+          <div class="water-progress-fill" id="water-bar" style="width: 100%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Attuatori & Automazioni</h2>
+    <div class="controls-grid">
+      <div class="control-card" id="card-fogger" onclick="toggleDevice('fogger')">
+        <div class="control-header">
+          <h3>Fogger</h3>
+          <label class="switch" onclick="event.stopPropagation()">
+            <input type="checkbox" id="check-fogger" onchange="toggleDevice('fogger')">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="control-footer">
+          <span>Stato:</span>
+          <span id="status-fogger">Spento</span>
+        </div>
+      </div>
+
+      <div class="control-card" id="card-irrigazione" onclick="toggleDevice('irrigazione')">
+        <div class="control-header">
+          <h3>Irrigazione</h3>
+          <label class="switch" onclick="event.stopPropagation()">
+            <input type="checkbox" id="check-irrigazione" onchange="toggleDevice('irrigazione')">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="control-footer">
+          <span>Stato:</span>
+          <span id="status-irrigazione">Spento</span>
+        </div>
+      </div>
+
+      <div class="control-card" id="card-cascata" onclick="toggleDevice('cascata')">
+        <div class="control-header">
+          <h3>Cascata</h3>
+          <label class="switch" onclick="event.stopPropagation()">
+            <input type="checkbox" id="check-cascata" onchange="toggleDevice('cascata')">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="control-footer">
+          <span>Stato:</span>
+          <span id="status-cascata">Spento</span>
+        </div>
+      </div>
+
+      <div class="control-card" id="card-luci" onclick="toggleDevice('luci')">
+        <div class="control-header">
+          <h3>Luci LED</h3>
+          <label class="switch" onclick="event.stopPropagation()">
+            <input type="checkbox" id="check-luci" onchange="toggleDevice('luci')">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="control-footer">
+          <span>Stato:</span>
+          <span id="status-luci">Spento</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pannello Avanzato Controllo Luci, Slider Luminosità & Cicli (Inserito subito sopra i log/report) -->
+    <div class="card card-full" style="margin-bottom: 16px;">
+      <h3 style="color: var(--accent); font-size: 1rem; margin-bottom: 12px;">💡 Gestione Avanzata Luci & Cursore</h3>
+      
+      <!-- Cursore di Luminosità -->
+      <div style="margin-bottom: 14px;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 4px;">
+          <span>Luminosità LED</span>
+          <span id="brightnessValue">100%</span>
+        </div>
+        <input type="range" id="brightnessSlider" min="0" max="100" value="100" 
+          style="width: 100%; accent-color: var(--accent); cursor: pointer;"
+          oninput="updateBrightness(this.value)">
+      </div>
+
+      <!-- Ciclo Predefinito / Personalizzato -->
+      <div>
+        <label class="label">Ciclo Predefinito Luci</label>
+        <select id="cycleSelect" onchange="setLightCycle(this.value)" style="margin-bottom: 8px;">
+          <option value="manual">Manuale</option>
+          <option value="day_night">Ciclo Giorno/Notte (12h / 12h)</option>
+          <option value="forced_growth">Forzatura Crescita (16h On)</option>
+          <option value="custom">Personalizzato (Orari fissi)</option>
+        </select>
+        
+        <div id="customCycleSettings" style="display: none; background: rgba(255,255,255,0.02); border: 1px dashed var(--border); padding: 10px; border-radius: 8px;">
+          <div style="display: flex; gap: 8px;">
+            <div style="flex: 1;">
+              <label class="label">Accensione</label>
+              <input type="time" id="startTime" value="08:00" onchange="updateCustomSchedule()" style="margin:0;">
+            </div>
+            <div style="flex: 1;">
+              <label class="label">Spegnimento</label>
+              <input type="time" id="stopTime" value="20:00" onchange="updateCustomSchedule()" style="margin:0;">
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <h2>Attuatori (Terrario Attivo)</h2>
-  <div class="controls-grid">
-    <button class="control-btn" id="btn-fogger" onclick="toggleDevice('fogger')">
-      <h3>Fogger</h3>
-      <span id="status-fogger">Spento</span>
-    </button>
-    <button class="control-btn" id="btn-irrigazione" onclick="toggleDevice('irrigazione')">
-      <h3>Irrigazione</h3>
-      <span id="status-irrigazione">Spento</span>
-    </button>
-    <button class="control-btn" id="btn-cascata" onclick="toggleDevice('cascata')">
-      <h3>Cascata</h3>
-      <span id="status-cascata">Spento</span>
-    </button>
-    <button class="control-btn" id="btn-luci" onclick="toggleDevice('luci')">
-      <h3>Luci LED</h3>
-      <span id="status-luci">Spento</span>
-    </button>
+  <!-- SCHEDA 2: REPORT & DATI -->
+  <div id="tab-reports" class="tab-content">
+    <div class="card card-full" style="margin-bottom: 16px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h3 style="color: var(--accent); font-size: 1rem;">📊 Storico Sensori & Trend</h3>
+        <div class="chart-filters">
+          <button class="btn-filter active" onclick="setChartFilter('day', this)">Giorno</button>
+          <button class="btn-filter" onclick="setChartFilter('week', this)">Settimana</button>
+          <button class="btn-filter" onclick="setChartFilter('month', this)">Mese</button>
+        </div>
+      </div>
+      <canvas id="trendChart"></canvas>
+    </div>
+
+    <div class="card card-full" style="margin-bottom: 16px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h3 style="color: var(--accent); font-size: 1rem;">📜 Log Accensioni & Eventi</h3>
+        <button class="btn-icon" style="font-size: 0.75rem; padding: 4px 8px; background: var(--border);" onclick="clearLogs()">Svuota Log</button>
+      </div>
+      <div class="log-container" id="log-list">
+        <div style="padding: 12px; text-align: center; color: var(--text-muted);">Nessun evento registrato.</div>
+      </div>
+    </div>
+
+    <div class="card card-full">
+      <h3 style="color: var(--accent); margin-bottom: 8px; font-size: 1rem;">💾 Backup & Ripristino</h3>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px;">Salva o ripristina la configurazione completa di terrari e preset.</p>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn-secondary" style="margin-top:0;" onclick="exportBackup()">📤 Esporta JSON</button>
+        <button class="btn-secondary" style="margin-top:0;" onclick="document.getElementById('import-file').click()">📥 Importa JSON</button>
+        <input type="file" id="import-file" style="display:none" accept=".json" onchange="importBackup(event)">
+      </div>
+    </div>
   </div>
 
+  <!-- SCHEDA 3: DIARIO & GALLERIA -->
+  <div id="tab-diary" class="tab-content">
+    <div class="card card-full" style="margin-bottom: 16px;">
+      <h3 style="color: var(--accent); font-size: 1rem; margin-bottom: 10px;">📖 Diario Biologico</h3>
+      <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+        <input type="text" id="diary-input" placeholder="Es. Inserita nuova felce, pulizia vetri..." style="margin:0;">
+        <button class="btn-primary" style="width: auto; padding: 0 16px;" onclick="addDiaryEntry()">Aggiungi</button>
+      </div>
+      <div id="diary-list" style="max-height: 180px; overflow-y: auto;">
+        <div style="text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 10px;">Nessuna nota nel diario.</div>
+      </div>
+    </div>
+
+    <div class="card card-full">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h3 style="color: var(--accent); font-size: 1rem;">📸 Galleria Fotografica</h3>
+        <button class="btn-icon" style="font-size: 0.75rem; padding: 4px 8px; background: var(--border);" onclick="document.getElementById('photo-file').click()">➕ Carica Foto</button>
+        <input type="file" id="photo-file" style="display:none" accept="image/*" onchange="uploadPhoto(event)">
+      </div>
+      <div class="gallery-grid" id="gallery-grid">
+        <div style="grid-column: span 3; text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 20px;">Nessuna foto salvata.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigazione Inferiore -->
+  <nav class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('control', this)">
+      <span>🎛️</span> Controllo
+    </button>
+    <button class="nav-tab" onclick="switchTab('reports', this); drawChart(); renderLogs();">
+      <span>📈</span> Report & Dati
+    </button>
+    <button class="nav-tab" onclick="switchTab('diary', this); renderDiary(); renderGallery();">
+      <span>📖</span> Diario & Foto
+    </button>
+  </nav>
+
+  <!-- Modale Configurazione Terrario -->
   <div id="config-modal">
     <div class="modal-content">
       <h3 id="modal-title">Configurazione Terrario</h3>
       
+      <label class="label">Icona Terrario</label>
+      <select id="cfg-icon">
+        <option value="🌿">🌿 Foglia / Giungla</option>
+        <option value="🐸">🐸 Rana / Dendrobates</option>
+        <option value="🦎">🦎 Geco / Rettile</option>
+        <option value="🐍">🐍 Serpente</option>
+        <option value="🏜️">🏜️ Deserto / Arido</option>
+        <option value="🌲">🌲 Bosco / Conifere</option>
+      </select>
+
       <label class="label">Nome Terrario</label>
       <input type="text" id="cfg-name" placeholder="es. Terrario Dendrobates">
 
@@ -148,7 +375,6 @@
       <div id="manual-inputs" class="manual-fields">
         <label class="label">Durata Fogger (secondi)</label>
         <input type="number" id="m-fogger-time" placeholder="es. 30">
-
         <label class="label">Durata Irrigazione (secondi)</label>
         <input type="number" id="m-irrig-time" placeholder="es. 15">
       </div>
@@ -160,18 +386,36 @@
 
   <script>
     const defaultPresets = {
-      tropicale: { name: 'Foresta Tropicale', targetTemp: 26, targetUmi: 85, foggerTime: 25, irrigTime: 15 },
-      palude: { name: 'Palude / Amphibia', targetTemp: 24, targetUmi: 95, foggerTime: 35, irrigTime: 20 },
-      subtropicale: { name: 'Subtropicale', targetTemp: 25, targetUmi: 70, foggerTime: 15, irrigTime: 10 },
-      deserto: { name: 'Deserto / Arido', targetTemp: 32, targetUmi: 30, foggerTime: 5, irrigTime: 5 },
-      manuale: { name: 'Personalizzato', targetTemp: '--', targetUmi: '--', foggerTime: 20, irrigTime: 10 }
+      tropicale: { name: 'Foresta Tropicale', tempMin: 22, tempMax: 30, umiMin: 70, umiMax: 95, foggerTime: 25, irrigTime: 15 },
+      palude: { name: 'Palude / Amphibia', tempMin: 20, tempMax: 28, umiMin: 85, umiMax: 100, foggerTime: 35, irrigTime: 20 },
+      subtropicale: { name: 'Subtropicale', tempMin: 20, tempMax: 28, umiMin: 60, umiMax: 85, foggerTime: 15, irrigTime: 10 },
+      deserto: { name: 'Deserto / Arido', tempMin: 26, tempMax: 38, umiMin: 20, umiMax: 45, foggerTime: 5, irrigTime: 5 },
+      manuale: { name: 'Personalizzato', tempMin: 18, tempMax: 32, umiMin: 50, umiMax: 90, foggerTime: 20, irrigTime: 10 }
     };
 
     let customPresets = JSON.parse(localStorage.getItem('terraria_custom_presets')) || {};
+    let configs = JSON.parse(localStorage.getItem('terraria_configs')) || [
+      { id: 'default', name: 'Terrario 1', icon: '🌿', ip: '', preset: 'tropicale', foggerTime: 25, irrigTime: 15 }
+    ];
+    let activeId = localStorage.getItem('terraria_active_id') || configs[0].id;
+    let isEditingExisting = false;
+    let currentFilter = 'day';
 
-    function getAllPresets() {
-      return { ...defaultPresets, ...customPresets };
+    function switchTab(tabName, element) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(n => n.classList.remove('active'));
+      document.getElementById('tab-' + tabName).classList.add('active');
+      element.classList.add('active');
     }
+
+    function setChartFilter(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      drawChart();
+    }
+
+    function getAllPresets() { return { ...defaultPresets, ...customPresets }; }
 
     function rebuildPresetSelect(selectedKey = 'tropicale') {
       const select = document.getElementById('preset-select');
@@ -182,19 +426,16 @@
         <option value="deserto">🏜️ Deserto / Arido (32°C / 30%)</option>
         <option value="manuale">🛠️ Personalizzato (Manuale)</option>
       `;
-
       for (const [key, p] of Object.entries(customPresets)) {
         let opt = document.createElement('option');
         opt.value = key;
         opt.textContent = `💾 ${p.name} (${p.foggerTime}s / ${p.irrigTime}s)`;
         select.appendChild(opt);
       }
-
       let saveOpt = document.createElement('option');
       saveOpt.value = 'salva_nuovo_preset';
       saveOpt.textContent = '➕ Salva impostazioni attuali come preset...';
       select.appendChild(saveOpt);
-
       select.value = selectedKey;
       renderCustomPresetsManager();
     }
@@ -203,22 +444,14 @@
       const box = document.getElementById('custom-presets-box');
       const list = document.getElementById('custom-presets-list');
       list.innerHTML = '';
-      
       const keys = Object.keys(customPresets);
-      if (keys.length === 0) {
-        box.style.display = 'none';
-        return;
-      }
-      
+      if (keys.length === 0) { box.style.display = 'none'; return; }
       box.style.display = 'block';
       keys.forEach(key => {
         let p = customPresets[key];
         let row = document.createElement('div');
         row.className = 'custom-preset-row';
-        row.innerHTML = `
-          <span>${p.name} (${p.foggerTime}s / ${p.irrigTime}s)</span>
-          <button class="btn-del-preset" onclick="deleteCustomPreset('${key}')" title="Elimina preset">❌ Elimina</button>
-        `;
+        row.innerHTML = `<span>${p.name} (${p.foggerTime}s / ${p.irrigTime}s)</span><button class="btn-del-preset" onclick="deleteCustomPreset('${key}')">❌ Elimina</button>`;
         list.appendChild(row);
       });
     }
@@ -231,15 +464,7 @@
       }
     }
 
-    let configs = JSON.parse(localStorage.getItem('terraria_configs')) || [
-      { id: 'default', name: 'Terrario 1', ip: '', preset: 'tropicale', foggerTime: 25, irrigTime: 15 }
-    ];
-    let activeId = localStorage.getItem('terraria_active_id') || configs[0].id;
-    let isEditingExisting = false;
-
-    function getActiveConfig() {
-      return configs.find(c => c.id === activeId) || configs[0];
-    }
+    function getActiveConfig() { return configs.find(c => c.id === activeId) || configs[0]; }
 
     function renderProfiles() {
       const bar = document.getElementById('profile-bar');
@@ -247,7 +472,8 @@
       configs.forEach(cfg => {
         let chip = document.createElement('div');
         chip.className = `profile-chip ${cfg.id === activeId ? 'active' : ''}`;
-        chip.innerHTML = `🌿 ${cfg.name}`;
+        let icon = cfg.icon || '🌿';
+        chip.innerHTML = `${icon} ${cfg.name}`;
         chip.onclick = () => switchProfile(cfg.id);
         bar.appendChild(chip);
       });
@@ -258,20 +484,30 @@
       let cfg = getActiveConfig();
       let detailsDiv = document.getElementById('config-details');
       let all = getAllPresets();
-      let pInfo = all[cfg.preset] || { name: 'Personalizzato', targetTemp: '--', targetUmi: '--' };
-      
-      let modeText = (cfg.preset === 'manuale' || cfg.preset.startsWith('custom_')) ? pInfo.name : `${pInfo.name} (${pInfo.targetTemp}°C / ${pInfo.targetUmi}%)`;
-      let ipDisplay = cfg.ip 
-        ? `<span>${cfg.ip}</span>` 
-        : `<span class="badge-ip-missing" onclick="openConfigModal(true)">⚠️ Configura IP</span>`;
+      let pInfo = all[cfg.preset] || { name: 'Personalizzato' };
+      let ipDisplay = cfg.ip ? `<span>${cfg.ip}</span>` : `<span class="badge-ip-missing" onclick="openConfigModal(true)">⚠️ Non configurato</span>`;
+      let icon = cfg.icon || '🌿';
       
       detailsDiv.innerHTML = `
-        <p>Terrario: <span>${cfg.name}</span> | IP: ${ipDisplay}</p>
-        <p>Ambiente: <span>${modeText}</span></p>
-        <p style="font-size: 0.8rem; margin-top: 4px;">Attuatori: Fogger <span>${cfg.foggerTime}s</span> | Irrigazione <span>${cfg.irrigTime}s</span></p>
-        <div class="action-links">
-          <button class="btn-edit-profile" onclick="openConfigModal(true)">✏️ Modifica Terrario</button>
-          <button class="btn-del-profile" onclick="deleteActiveTerrarium()">🗑️ Elimina Terrario</button>
+        <div class="config-header">
+          <div>
+            <div class="config-title">${icon} ${cfg.name}</div>
+          </div>
+          <div class="config-badge">${pInfo.name}</div>
+        </div>
+        <div class="config-grid-info">
+          <div class="config-item">
+            <label>Indirizzo IP ESP32</label>
+            <div>${ipDisplay}</div>
+          </div>
+          <div class="config-item">
+            <label>Durate Attuatori</label>
+            <span>Fogger: ${cfg.foggerTime}s | Irrig: ${cfg.irrigTime}s</span>
+          </div>
+        </div>
+        <div class="config-actions">
+          <button class="btn-action-outline" onclick="openConfigModal(true)">✏️ Modifica Terrario</button>
+          <button class="btn-action-outline btn-action-danger" onclick="deleteActiveTerrarium()">🗑️ Elimina</button>
         </div>
       `;
     }
@@ -281,23 +517,24 @@
       localStorage.setItem('terraria_active_id', activeId);
       renderProfiles();
       fetchStatus();
+      drawChart();
+      renderLogs();
+      renderDiary();
+      renderGallery();
     }
 
     function deleteActiveTerrarium() {
-      if (configs.length <= 1) {
-        alert("Non puoi eliminare l'unico terrario rimasto. Crea prima un nuovo terrario.");
-        return;
-      }
-      
-      let cfg = getActiveConfig();
-      if (confirm(`Vuoi davvero eliminare il terrario "${cfg.name}"?`)) {
+      if (configs.length <= 1) { alert("Non puoi eliminare l'unico terrario rimasto."); return; }
+      if (confirm("Vuoi davvero eliminare questo terrario?")) {
         localStorage.removeItem('last_refill_' + activeId);
+        localStorage.removeItem('history_' + activeId);
+        localStorage.removeItem('logs_' + activeId);
+        localStorage.removeItem('diary_' + activeId);
+        localStorage.removeItem('gallery_' + activeId);
         configs = configs.filter(c => c.id !== activeId);
         activeId = configs[0].id;
-        
         localStorage.setItem('terraria_configs', JSON.stringify(configs));
         localStorage.setItem('terraria_active_id', activeId);
-        
         renderProfiles();
         fetchStatus();
       }
@@ -305,44 +542,30 @@
 
     function openConfigModal(editCurrent = false) {
       isEditingExisting = editCurrent;
-      let cfg = editCurrent ? getActiveConfig() : { name: '', ip: '', preset: 'tropicale', foggerTime: 25, irrigTime: 15 };
-
+      let cfg = editCurrent ? getActiveConfig() : { name: '', icon: '🌿', ip: '', preset: 'tropicale', foggerTime: 25, irrigTime: 15 };
       document.getElementById('modal-title').innerText = editCurrent ? 'Modifica Terrario' : 'Nuovo Terrario';
       document.getElementById('cfg-name').value = cfg.name;
+      document.getElementById('cfg-icon').value = cfg.icon || '🌿';
       document.getElementById('esp-ip').value = cfg.ip;
-      
       rebuildPresetSelect(cfg.preset);
-
       document.getElementById('m-fogger-time').value = cfg.foggerTime;
       document.getElementById('m-irrig-time').value = cfg.irrigTime;
-      
       handlePresetChange();
       document.getElementById('config-modal').style.display = 'flex';
     }
 
-    function closeModal() {
-      document.getElementById('config-modal').style.display = 'none';
-    }
+    function closeModal() { document.getElementById('config-modal').style.display = 'none'; }
 
     function handlePresetChange() {
       const preset = document.getElementById('preset-select').value;
       const manualBox = document.getElementById('manual-inputs');
-      
       if (preset === 'salva_nuovo_preset') {
         let presetName = prompt("Inserisci il nome per il nuovo preset definitivo:", "Mio Preset");
         if (presetName && presetName.trim() !== '') {
           let fTime = parseInt(document.getElementById('m-fogger-time').value) || 20;
           let iTime = parseInt(document.getElementById('m-irrig-time').value) || 10;
           let newKey = 'custom_' + Date.now();
-          
-          customPresets[newKey] = {
-            name: presetName.trim(),
-            targetTemp: '--',
-            targetUmi: '--',
-            foggerTime: fTime,
-            irrigTime: iTime
-          };
-          
+          customPresets[newKey] = { name: presetName.trim(), foggerTime: fTime, irrigTime: iTime };
           localStorage.setItem('terraria_custom_presets', JSON.stringify(customPresets));
           rebuildPresetSelect(newKey);
           manualBox.style.display = 'block';
@@ -352,9 +575,7 @@
           return;
         }
       }
-
       manualBox.style.display = (preset === 'manuale' || preset.startsWith('custom_')) ? 'block' : 'none';
-
       let all = getAllPresets();
       if (all[preset]) {
         document.getElementById('m-fogger-time').value = all[preset].foggerTime;
@@ -364,12 +585,10 @@
 
     function saveConfiguration() {
       let name = document.getElementById('cfg-name').value.trim() || ('Terrario ' + (configs.length + 1));
+      let icon = document.getElementById('cfg-icon').value;
       let ip = document.getElementById('esp-ip').value.trim();
       let preset = document.getElementById('preset-select').value;
-      
-      if (preset === 'salva_nuovo_preset') {
-        preset = 'manuale';
-      }
+      if (preset === 'salva_nuovo_preset') preset = 'manuale';
       
       let foggerTime = parseInt(document.getElementById('m-fogger-time').value) || 20;
       let irrigTime = parseInt(document.getElementById('m-irrig-time').value) || 10;
@@ -384,111 +603,385 @@
 
       if (isEditingExisting) {
         let activeCfg = getActiveConfig();
-        activeCfg.name = name;
-        activeCfg.ip = ip;
+        activeCfg.name = name; 
+        activeCfg.icon = icon;
+        activeCfg.ip = ip; 
         activeCfg.preset = preset;
-        activeCfg.foggerTime = foggerTime;
+        activeCfg.foggerTime = foggerTime; 
         activeCfg.irrigTime = irrigTime;
       } else {
-        let newCfg = {
-          id: 'cfg_' + Date.now(),
-          name: name,
-          ip: ip,
-          preset: preset,
-          foggerTime: foggerTime,
-          irrigTime: irrigTime
-        };
+        let newCfg = { id: 'cfg_' + Date.now(), name, icon, ip, preset, foggerTime, irrigTime };
         configs.push(newCfg);
         activeId = newCfg.id;
       }
-
       localStorage.setItem('terraria_configs', JSON.stringify(configs));
       localStorage.setItem('terraria_active_id', activeId);
-
       closeModal();
       renderProfiles();
       fetchStatus();
     }
 
+    // Funzioni aggiuntive per la gestione avanzata delle luci (Slider, Interruttore e Cicli)
+    function updateBrightness(val) {
+      document.getElementById('brightnessValue').innerText = val + '%';
+      console.log(`Luminosità impostata a: ${val}%`);
+    }
+
+    function setLightCycle(mode) {
+      const customDiv = document.getElementById('customCycleSettings');
+      if (mode === 'custom') {
+        customDiv.style.display = 'block';
+      } else {
+        customDiv.style.display = 'none';
+      }
+      console.log(`Ciclo luci impostato su: ${mode}`);
+    }
+
+    function updateCustomSchedule() {
+      let start = document.getElementById('startTime').value;
+      let end = document.getElementById('stopTime').value;
+      console.log(`Orario personalizzato luci - Accensione: ${start}, Spegnimento: ${end}`);
+    }
+
     function updateWaterPrediction() {
       let lastRefill = localStorage.getItem('last_refill_' + activeId);
-      const maxDays = 5; 
-      if (!lastRefill) {
-        resetWater();
-        return;
-      }
+      const maxDays = 5;
+      if (!lastRefill) { resetWater(); return; }
       let diffDays = (new Date() - new Date(lastRefill)) / (1000 * 60 * 60 * 24);
       let remainingDays = Math.max(0, (maxDays - diffDays)).toFixed(1);
       let percent = Math.max(0, Math.min(100, (remainingDays / maxDays) * 100));
-
       document.getElementById('water-days').innerText = `~${remainingDays} giorni`;
       let bar = document.getElementById('water-bar');
       bar.style.width = percent + '%';
       bar.style.background = (percent < 20) ? 'var(--danger)' : 'var(--accent)';
+      
+      if (percent < 15) {
+        showAlert("Attenzione: livello acqua nel serbatoio quasi esaurito!");
+      }
     }
 
     function resetWater() {
       localStorage.setItem('last_refill_' + activeId, new Date().toISOString());
+      hideAlert();
       updateWaterPrediction();
+      addLog("💧 Rabbocco serbatoio acqua eseguito");
+    }
+
+    function showAlert(msg) {
+      const banner = document.getElementById('alert-banner');
+      document.getElementById('alert-text').innerText = msg;
+      banner.style.display = 'flex';
+      
+      if ("Notification" in window && Notification.permission === "granted") {
+        new Notification("Terraria Manager Alert", { body: msg });
+      }
+    }
+
+    function hideAlert() {
+      document.getElementById('alert-banner').style.display = 'none';
+    }
+
+    if ("Notification" in window && Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
+
+    // Gestione Diario Biologico
+    function addDiaryEntry() {
+      const input = document.getElementById('diary-input');
+      let text = input.value.trim();
+      if (!text) return;
+      let diaryKey = 'diary_' + activeId;
+      let diary = JSON.parse(localStorage.getItem(diaryKey)) || [];
+      let timeString = new Date().toLocaleString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' });
+      diary.unshift({ date: timeString, text: text });
+      localStorage.setItem(diaryKey, JSON.stringify(diary));
+      input.value = '';
+      renderDiary();
+    }
+
+    function renderDiary() {
+      const container = document.getElementById('diary-list');
+      if (!container) return;
+      let diaryKey = 'diary_' + activeId;
+      let diary = JSON.parse(localStorage.getItem(diaryKey)) || [];
+      if (diary.length === 0) {
+        container.innerHTML = `<div style="text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 10px;">Nessuna nota nel diario.</div>`;
+        return;
+      }
+      container.innerHTML = diary.map(d => `
+        <div class="timeline-item">
+          <div class="timeline-date">${d.date}</div>
+          <div class="timeline-text">${d.text}</div>
+        </div>
+      `).join('');
+    }
+
+    // Gestione Galleria Fotografica
+    function uploadPhoto(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        let galleryKey = 'gallery_' + activeId;
+        let gallery = JSON.parse(localStorage.getItem(galleryKey)) || [];
+        gallery.unshift({ img: e.target.result, date: new Date().toLocaleDateString('it-IT') });
+        if (gallery.length > 20) gallery.pop();
+        localStorage.setItem(galleryKey, JSON.stringify(gallery));
+        renderGallery();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function renderGallery() {
+      const container = document.getElementById('gallery-grid');
+      if (!container) return;
+      let galleryKey = 'gallery_' + activeId;
+      let gallery = JSON.parse(localStorage.getItem(galleryKey)) || [];
+      if (gallery.length === 0) {
+        container.innerHTML = `<div style="grid-column: span 3; text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 20px;">Nessuna foto salvata.</div>`;
+        return;
+      }
+      container.innerHTML = gallery.map(g => `
+        <div>
+          <img src="${g.img}" class="gallery-thumb" alt="Foto Terrario">
+          <div style="font-size: 0.7rem; color: var(--text-muted); text-align: center; margin-top:2px;">${g.date}</div>
+        </div>
+      `).join('');
+    }
+
+    // Backup e Ripristino JSON
+    function exportBackup() {
+      const backupData = {
+        configs: configs,
+        customPresets: customPresets,
+        version: "1.0",
+        exportDate: new Date().toISOString()
+      };
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "terraria_manager_backup.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importBackup(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (imported.configs && imported.customPresets) {
+            if (confirm("Vuoi sovrascrivere le configurazioni attuali con quelle del file di backup?")) {
+              configs = imported.configs;
+              customPresets = imported.customPresets;
+              activeId = configs[0].id;
+              localStorage.setItem('terraria_configs', JSON.stringify(configs));
+              localStorage.setItem('terraria_custom_presets', JSON.stringify(customPresets));
+              localStorage.setItem('terraria_active_id', activeId);
+              renderProfiles();
+              fetchStatus();
+              alert("Backup importato con successo!");
+            }
+          } else {
+            alert("Il file JSON non è valido.");
+          }
+        } catch (err) {
+          alert("Errore durante la lettura del file di backup.");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // Gestione Log Eventi
+    function addLog(actionText) {
+      let logKey = 'logs_' + activeId;
+      let logs = JSON.parse(localStorage.getItem(logKey)) || [];
+      let timeString = new Date().toLocaleString('it-IT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      
+      logs.unshift({ time: timeString, action: actionText });
+      if (logs.length > 50) logs.pop();
+      
+      localStorage.setItem(logKey, JSON.stringify(logs));
+      renderLogs();
+    }
+
+    function renderLogs() {
+      const container = document.getElementById('log-list');
+      if (!container) return;
+      let logKey = 'logs_' + activeId;
+      let logs = JSON.parse(localStorage.getItem(logKey)) || [];
+
+      if (logs.length === 0) {
+        container.innerHTML = `<div style="padding: 12px; text-align: center; color: var(--text-muted);">Nessun evento registrato.</div>`;
+        return;
+      }
+
+      container.innerHTML = logs.map(l => `
+        <div class="log-row">
+          <span class="log-action">${l.action}</span>
+          <span class="log-time">${l.time}</span>
+        </div>
+      `).join('');
+    }
+
+    function clearLogs() {
+      if (confirm("Vuoi svuotare il log delle accensioni per questo terrario?")) {
+        localStorage.removeItem('logs_' + activeId);
+        renderLogs();
+      }
+    }
+
+    function recordSensorData(temp, umi) {
+      let historyKey = 'history_' + activeId;
+      let history = JSON.parse(localStorage.getItem(historyKey)) || [];
+      let now = new Date().getTime();
+      
+      history.push({ time: now, temp: temp, umi: umi });
+      if (history.length > 1000) history.shift();
+      localStorage.setItem(historyKey, JSON.stringify(history));
+
+      let cfg = getActiveConfig();
+      let all = getAllPresets();
+      let presetInfo = all[cfg.preset] || defaultPresets['tropicale'];
+      
+      if (presetInfo.tempMin && (temp < presetInfo.tempMin || temp > presetInfo.tempMax)) {
+        showAlert(`Temperatura critica (${temp}°C)! Fuori range ideale.`);
+      } else if (presetInfo.umiMin && (umi < presetInfo.umiMin || umi > presetInfo.umiMax)) {
+        showAlert(`Umidità critica (${umi}%)! Fuori range ideale.`);
+      } else {
+        hideAlert();
+      }
     }
 
     function fetchStatus() {
       let cfg = getActiveConfig();
-      if (!cfg.ip) {
-        document.getElementById('temp').innerText = '--.- °C';
-        document.getElementById('umi').innerText = '--.- %';
-        return;
-      }
-      
+      if (!cfg.ip) { document.getElementById('temp').innerText = '--.- °C'; document.getElementById('umi').innerText = '--.- %'; return; }
       fetch(`http://${cfg.ip}/status`)
         .then(res => res.json())
         .then(data => {
           document.getElementById('temp').innerText = data.temp + ' °C';
           document.getElementById('umi').innerText = data.umi + ' %';
-          
           updateDeviceState('fogger', data.fogger);
           updateDeviceState('irrigazione', data.irrigazione);
           updateDeviceState('cascata', data.cascata);
           updateDeviceState('luci', data.luci);
           updateWaterPrediction();
+          recordSensorData(data.temp, data.umi);
         })
-        .catch(err => console.log("ESP32 non raggiungibile all'indirizzo " + cfg.ip));
+        .catch(err => console.log("ESP32 non raggiungibile"));
     }
 
     function updateDeviceState(device, state) {
-      const btn = document.getElementById(`btn-${device}`);
+      const card = document.getElementById(`card-${device}`);
       const statusSpan = document.getElementById(`status-${device}`);
+      const checkbox = document.getElementById(`check-${device}`);
+      
+      if (checkbox) checkbox.checked = (state === 1);
+
       if (state === 1) {
-        btn.classList.add('active');
-        statusSpan.innerText = 'Acceso';
+        if (card) card.classList.add('active');
+        if (statusSpan) statusSpan.innerText = 'Acceso';
       } else {
-        btn.classList.remove('active');
-        statusSpan.innerText = 'Spento';
+        if (card) card.classList.remove('active');
+        if (statusSpan) statusSpan.innerText = 'Spento';
       }
     }
 
     function toggleDevice(device) {
       let cfg = getActiveConfig();
-      if (!cfg.ip) {
-        alert("Inserisci prima l'indirizzo IP della scheda ESP32 per questo terrario!");
-        openConfigModal(true);
-        return;
-      }
-
-      let durata = 0;
-      if (device === 'fogger') durata = cfg.foggerTime;
-      if (device === 'irrigazione') durata = cfg.irrigTime;
-
+      if (!cfg.ip) { alert("Inserisci prima l'indirizzo IP!"); openConfigModal(true); return; }
+      let durata = (device === 'fogger') ? cfg.foggerTime : (device === 'irrigazione') ? cfg.irrigTime : 0;
       let url = `http://${cfg.ip}/control?dispositivo=${device}&azione=toggle`;
       if (durata > 0) url += `&durata=${durata}`;
+      
+      let deviceNameFormatted = device.charAt(0).toUpperCase() + device.slice(1);
 
       fetch(url)
         .then(res => res.json())
-        .then(data => fetchStatus())
-        .catch(err => alert("Impossibile raggiungere l'ESP32 all'IP: " + cfg.ip + ". Verifica la connessione."));
+        .then(data => {
+          fetchStatus();
+          addLog(`🔌 ${deviceNameFormatted} attivato${durata > 0 ? ` (${durata}s)` : ''}`);
+        })
+        .catch(err => alert("Errore di connessione ESP32."));
+    }
+
+    function drawChart() {
+      const canvas = document.getElementById('trendChart');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const width = canvas.width = canvas.parentElement.clientWidth;
+      const height = canvas.height = 160;
+
+      ctx.clearRect(0, 0, width, height);
+
+      let historyKey = 'history_' + activeId;
+      let history = JSON.parse(localStorage.getItem(historyKey)) || [];
+
+      let now = new Date().getTime();
+      let limitTime = now;
+      if (currentFilter === 'day') limitTime = now - (24 * 60 * 60 * 1000);
+      else if (currentFilter === 'week') limitTime = now - (7 * 24 * 60 * 60 * 1000);
+      else if (currentFilter === 'month') limitTime = now - (30 * 24 * 60 * 60 * 1000);
+
+      let filtered = history.filter(item => item.time >= limitTime);
+
+      ctx.strokeStyle = '#1f293d';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(30, 20); ctx.lineTo(width - 10, 20);
+      ctx.moveTo(30, 80); ctx.lineTo(width - 10, 80);
+      ctx.moveTo(30, 140); ctx.lineTo(width - 10, 140);
+      ctx.stroke();
+
+      if (filtered.length < 2) {
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = '12px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText('Dati insufficienti per il periodo selezionato', width / 2, height / 2);
+        return;
+      }
+
+      let temps = filtered.map(d => d.temp);
+      let umis = filtered.map(d => d.umi);
+      let minTemp = Math.min(...temps, 15), maxTemp = Math.max(...temps, 35);
+      let minUmi = Math.min(...umis, 20), maxUmi = Math.max(...umis, 100);
+
+      function getX(index) { return 30 + (index / (filtered.length - 1)) * (width - 40); }
+      function getYTemp(val) { return 140 - ((val - minTemp) / (maxTemp - minTemp || 1)) * 120; }
+      function getYUmi(val) { return 140 - ((val - minUmi) / (maxUmi - minUmi || 1)) * 120; }
+
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      filtered.forEach((d, i) => {
+        let x = getX(i), y = getYUmi(d.umi);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      filtered.forEach((d, i) => {
+        let x = getX(i), y = getYTemp(d.temp);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      ctx.fillStyle = '#10b981';
+      ctx.font = '10px system-ui';
+      ctx.fillText('● Temperatura (°C)', 35, 12);
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillText('● Umidità (%)', 150, 12);
     }
 
     renderProfiles();
+    renderLogs();
+    renderDiary();
+    renderGallery();
     setInterval(fetchStatus, 5000);
     if (getActiveConfig().ip) fetchStatus();
   </script>
